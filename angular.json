@@ -15,9 +15,14 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:browser-esbuild",
+          // commands for Better unit testing with Jest and Web Test Runner
+          // "builder": "@angular-devkit/build-angular:jest",
+          // "options": {
+          //   "tsConfig": "tsconfig.spec.json",
+          //   "polyfills": ["zone.js", "zone.js/testing"]
           "options": {
-            "outputPath": "dist/Angular16features",
+            "outputPath": "dist/Angular16features/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -98,8 +103,71 @@
             ],
             "scripts": []
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/Angular16features/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false,
+              "vendorChunk": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "Angular16features:build:development",
+              "serverTarget": "Angular16features:server:development"
+            },
+            "production": {
+              "browserTarget": "Angular16features:build:production",
+              "serverTarget": "Angular16features:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "Angular16features:build:production",
+              "serverTarget": "Angular16features:server:production"
+            },
+            "development": {
+              "browserTarget": "Angular16features:build:development",
+              "serverTarget": "Angular16features:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "5207314f-6717-4830-a4ef-15fe421a1347"
   }
 }

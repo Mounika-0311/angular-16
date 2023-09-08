@@ -1,0 +1,13 @@
+<!-- <p>child works!-{{name}}</p> -->
+<h5>update name using the input</h5>
+<div >
+    <div>
+        <label>Enter your name</label>
+        <input matInput #myName (input)="updateName(myName.value)"> 
+    </div>
+    My name is: {{name() }}
+</div>
+
+
+
+
